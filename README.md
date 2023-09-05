@@ -1,7 +1,7 @@
 # statusbar
 An application that starts up a 'bar that handles battery statistics, time, date and a generic start button.
 
-<table><tr><td>[Download (.MSI)](/Releases)</td></tr></table>
+<table><tr><td>[Download (.MSI)](https://github.com/tnhung2011/statusbar/releases)</td></tr></table>
 
 ### Compatibility
 Due to specialisations in Windows as par `winapi` and Tauri, statusbar only support Windows 7 and above.
