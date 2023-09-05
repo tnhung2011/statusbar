@@ -1,0 +1,57 @@
+{
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "../src",
+    "distDir": "../src",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "statusbar",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": "^(shell:).+"
+      },
+      "window": {
+        "all": false,
+        "setResizable": true,
+        "setDecorations": true,
+        "setTitle": true,
+        "setSize": true,
+        "setMaxSize": true,
+        "setPosition": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.tnhung2011.statusbar",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "skipTaskbar": true,
+        "transparent": true,
+        "fullscreen": false,
+        "resizable": false,
+        "decorations": false,
+        "title": "statusbar",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "macOSPrivateApi": true
+  }
+}

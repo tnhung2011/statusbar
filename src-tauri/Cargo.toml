@@ -1,0 +1,25 @@
+[package]
+name = "statusbar"
+version = "0.1.0"
+description = "A generic taskbar replacement"
+authors = ["tnhung2011"]
+license = "MIT"
+repository = "https://github.com/tnhung2011/statusbar"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.4", features = [] }
+
+[dependencies]
+tauri = { version = "1.4", features = ["macos-private-api", "shell-open", "window-set-decorations", "window-set-max-size", "window-set-position", "window-set-resizable", "window-set-size", "window-set-title"] }
+winapi = { version = "0.3.9", features = ["winuser"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sys-locale = "0.3.1"
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

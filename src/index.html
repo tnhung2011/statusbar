@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+<style>
+/* this section is taken from normalize.css
+   ver. 8.0.1, licensed under MIT License,
+   as in github.com/necolas/normalize.css */
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+}
+</style>
+<style>
+body {
+    user-select: none;
+    font-family: monospace;
+    font-size: 14.5px;
+    margin: 2px;
+}
+
+.nojs {
+    display: none;
+}
+
+.info {
+    width: fit-content;
+    float: right;
+}
+
+.percentage {
+    color: #fff;
+    width: 150px;
+    display: inline-block;
+    text-align: center;
+    background: green;
+}
+
+.start {
+    border: 2px solid black;
+    border-radius: 50%;
+    background: grey;
+    font-size: 9px;
+}
+
+.start:hover {
+    background: #000;
+}
+
+.is-charging {
+    text-transform: capitalize;
+}
+</style>
+<noscript><style>
+.js { display: none }
+.nojs { display: initial !important }
+</style></noscript>
+</head>
+<body>
+<div class="info">
+[ <span class="js"><div class="percentage"></div>&nbsp;
+<span class="is-charging"></span> | 
+<span class="date-time"></span></span>
+<span class="nojs">This operating system is unsupported</span> ]
+<span class="js"> [ <span class="start">&nbsp;&nbsp;</span> ]</span>
+</div>
+<script>
+var win = __TAURI__.window.appWindow;
+async function _init() {
+    var size = await win.innerSize();
+    var tdim = JSON.parse(await __TAURI__.tauri.invoke("tbdim"));
+    var info = document.getElementsByClassName("info")[0];
+    var scaleFactor = (await win.scaleFactor()) + 0.5;
+    var info_h = Math.round(info.offsetHeight * scaleFactor)
+
+    console.clear(); console.log(tdim);
+
+    win.setPosition(new __TAURI__.window.PhysicalPosition(0, tdim.aty + (tdim.h - info_h) / 2));
+    win.setSize(new __TAURI__.window.PhysicalSize(tdim.w - 5, info_h));
+    win.setClosable(false);
+}
+window.onload = _init;
+</script>
+<script>
+(document.getElementsByClassName("start")[0]).onmousedown = function() {
+    __TAURI__.shell.open("shell:::{4234d49b-0245-4df3-B780-3893943456e1}");
+}
+</script>
+<script>
+(function() {
+    var elem = document.getElementsByClassName("percentage")[0];
+    var isc  = document.getElementsByClassName("is-charging")[0];
+
+    if (!navigator.getBattery) {
+        (document.getElementsByClassName("nojs")[0]).style.display = "initial";
+        (document.getElementsByClassName("js")[0]).style.display = "none";
+        (document.getElementsByClassName("js")[1]).style.display = "none";
+        return;
+    }
+
+    function wrap(fn, arg) {
+        return function() {
+            fn.apply(arg, arguments);
+        }
+    }
+
+    navigator.getBattery().then(wrap(function(battery) {
+        elem.innerText = Math.floor(battery.level * 100);
+        elem.innerText += "%";
+        elem.style.background = "linear-gradient(to right, green 0%, green " + elem.innerText +
+                                ", limegreen " + elem.innerText + ", limegreen 100%)";
+        isc.innerText = (battery.charging ? "" : "dis") + "charging...";
+
+        battery.addEventListener("levelchange", function(e) {
+            elem.innerText = Math.floor(e.target.level * 100);
+            elem.innerText += "%";
+            elem.style.background = "linear-gradient(to right, green 0%, green " + elem.innerText +
+                                    ", limegreen " + elem.innerText + ", limegreen 100%)";
+        });
+
+        battery.addEventListener("chargingchange", function(e) {
+            isc.innerText = (battery.charging ? "" : "dis") + "charging...";
+        });
+    }, this));
+
+    var locale = "";
+
+    __TAURI__.tauri.invoke("localise").then(function(e) {
+        (function poll() {
+            if (e) {
+                var dte  = document.getElementsByClassName("date-time")[0];
+                setInterval(function() {
+                    dte.innerText = new Intl.DateTimeFormat(e,
+                                    {
+                                        dateStyle: 'medium',
+                                        timeStyle: 'medium'
+                                    }).format(new Date()).replaceAll(/(.*),(.*)$/g, function(_, before, after) {
+                                        return before + " |" + after;
+                                    });
+                }, 1000);
+            } else setTimeout(poll, 30);
+        })();
+    });
+
+    console.log("finished loading");
+})();
+</script>
+</body>
+</html>
