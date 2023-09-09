@@ -14,8 +14,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [[windows-2019, x86], [windows-2019, x64]]
-    runs-on: ${{ matrix.os }}
+        arch: [x86, x64]
+    runs-on: [windows-lastest, ${{ matrix.arch }}]
 
     steps:
     - uses: actions/checkout@v3
