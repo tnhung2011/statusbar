@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        arch: [x86, x64]
+        arch: [i686-pc-windows-msvc, x86_64-pc-windows-msvc]
     runs-on: windows-latest
 
     steps:
@@ -23,13 +23,17 @@ jobs:
       uses: crazy-max/ghaction-chocolatey@v2
       with:
         args: install webview2-runtime
-    - name: Tauri build
+    - name: Install x86 deps
+      if: ${{ matrix.arch == 'i686-pc-windows-msvc' }}
+      run: rustup target add i686-pc-windows-msvc
+    - name: Build executable
       uses: tauri-apps/tauri-action@v0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        args: --target ${{ matrix.arch }}
         tagName: ${{ env.name }}-v__VERSION__
-        releaseName: '${{ env.name }} v__VERSION__'
+        releaseName: '${{ env.name }} v__VERSION__ ${{ matrix.arch }}'
         releaseBody: 'See the assets to download this version and install.'
         releaseDraft: true
         prerelease: false
