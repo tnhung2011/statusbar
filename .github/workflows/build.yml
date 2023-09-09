@@ -19,6 +19,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install WebView2
+      uses: crazy-max/ghaction-chocolatey@v2
+      with:
+        args: install webview2-runtime
+    - name: Install Tauri CLI
+      run: cargo install tauri-cli
     - name: Build x86
       if: ${{ matrix.arch == 'x86' }}
       run: |
