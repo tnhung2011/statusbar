@@ -15,11 +15,17 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x64]
-    runs-on: [windows-lastest, ${{ matrix.arch }}]
+    runs-on: windows-lastest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build
+    - name: Build x86
+      if: ${{ matrix.arch == 'x86' }}
+      run: |
+        rustup target add i686-pc-windows-msvc
+        cargo tauri build --verbose --target i686-pc-windows-msvc
+    - name: Build x64
+      if: ${{ matrix.arch == 'x64' }}
       run: cargo tauri build --verbose
     - name: Upload installer package
       uses: actions/upload-artifact@v3.1.3
