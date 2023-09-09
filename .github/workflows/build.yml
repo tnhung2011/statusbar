@@ -1,0 +1,30 @@
+name: Build executable
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  name: statusbar
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-2019-x32, windows-2019-x64]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo tauri build --verbose
+    - name: Upload installer package
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: ${{ PROCESSOR_ARCHITECTURE }} Package
+        path: |
+          ${{ github.workspace }}/src-tauri/target/release/bundle/msi
+          ${{ github.workspace }}/src-tauri/target/release/${{ name }}.exe
