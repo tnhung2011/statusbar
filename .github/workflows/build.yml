@@ -15,6 +15,8 @@ jobs:
     strategy:
       matrix:
         arch: [i686-pc-windows-msvc, x86_64-pc-windows-msvc]
+    permissions:
+      contents: write
     runs-on: windows-latest
 
     steps:
@@ -32,7 +34,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: --target ${{ matrix.arch }}
-        tagName: ${{ env.name }}-v__VERSION__
+        tagName: v__VERSION__
         releaseName: '${{ env.name }} v__VERSION__ ${{ matrix.arch }}'
         releaseBody: 'See the assets to download this version and install.'
         releaseDraft: true
