@@ -1,10 +1,6 @@
 name: Build executable
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: workflow_dispatch
 
 env:
   name: statusbar
@@ -35,7 +31,7 @@ jobs:
       with:
         args: --target ${{ matrix.arch }}
         tagName: v__VERSION__
-        releaseName: '${{ env.name }} v__VERSION__ ${{ matrix.arch }}'
+        releaseName: '${{ env.name }} v__VERSION__'
         releaseBody: 'See the assets to download this version and install.'
         releaseDraft: true
         prerelease: false
