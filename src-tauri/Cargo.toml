@@ -13,7 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.4", features = [] }
 
 [dependencies]
-tauri = { version = "1.4", features = ["macos-private-api", "shell-open", "window-set-decorations", "window-set-max-size", "window-set-position", "window-set-resizable", "window-set-size", "window-set-title"] }
+tauri = { version = "1.4", features = ["windows7-compat", "macos-private-api", "shell-open", "window-set-decorations", "window-set-max-size", "window-set-position", "window-set-resizable", "window-set-size", "window-set-title"] }
 winapi = { version = "0.3.9", features = ["winuser"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
