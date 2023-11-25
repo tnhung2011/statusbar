@@ -5,27 +5,28 @@ An application that starts up a 'bar that handles battery statistics, time, date
 * [Download (source code)](https://github.com/tnhung2011/statusbar/archive/refs/heads/master.zip)
 
 ### Compatibility
-Due to specialisations in Windows as par `winapi` and Tauri, statusbar only support Windows 7 and above.
+As per Tauri restrictions (and its focus on Windows), statusbar only support Windows 7 and above.
 
-### Performance
-Since this program utilizes Microsoft Edge WebView2 (through Tauri), it can consume up to ~100 MB of memory, which is light compared to Electron's consumption of ~410 MB.
+<!-- Performance
+Since this program utilizes Microsoft Edge WebView2 (through Tauri), it can consume up to ~100 MB of memory, which is lightweight compared to Electron's consumption of ~410 MB. -->
 
 ### Usage
-Since this program's window is transparent, it may overlap the main shell's taskbar. To prevent this, simply run
+This program, on default, overlaps the shell's taskbar. To prevent this, simply run
 ```batch
 taskkill /f /im explorer.exe
 ```
-You may also want to edit the `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon` key if you wish to deplace the main shell.
+You may also edit the `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon` key if you wish to replace the main shell.
 
-### Development
-To start developing, run
+### Deployment
+*(assuming you're in the `src-tauri` folder)*
+
+To initialise this program, run
 ```batch
-cd src-tauri
 cargo update
 cargo tauri dev
 ```
 
-To compile this program (assuming you're in the folder `src-tauri`), run
+To compile this program, run
 ```batch
 cargo tauri compile
 ```
